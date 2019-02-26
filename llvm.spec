@@ -55,7 +55,7 @@
 
 Name:		%{pkg_name}
 Version:	%{maj_ver}.%{min_ver}.%{patch_ver}
-Release:	3%{?rc_ver:.rc%{rc_ver}}%{?dist}
+Release:	4%{?rc_ver:.rc%{rc_ver}}%{?dist}
 Summary:	The Low Level Virtual Machine
 
 License:	NCSA
@@ -371,7 +371,6 @@ fi
 %{_datadir}/opt-viewer
 %exclude %{llvm_bindir}/unittests
 %else
-%config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 %exclude %{pkg_bindir}/llvm-config
 %{pkg_bindir}
 %endif
@@ -387,6 +386,7 @@ fi
 %{_libdir}/libLLVM-%{maj_ver}.%{min_ver}*.so
 %{_libdir}/libLTO.so*
 %else
+%config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 %{pkg_libdir}/BugpointPasses.so
 %{pkg_libdir}/LLVMHello.so
 %if %{with gold}
@@ -449,6 +449,9 @@ fi
 %endif
 
 %changelog
+
+* Tue Feb 26 2019 sguelton@redhat.com - 7.0.1-4
+- Install ld.so.config file with -lib package
 
 * Mon Feb 18 2019 sguelton@redhat.com - 7.0.1-3
 - Sync specfile with llvm7.0 package
