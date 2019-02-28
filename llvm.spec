@@ -1,5 +1,9 @@
 # Components enabled if supported by target architecture:
+%if 0%{?rhel} && 0%{?rhel} < 8
+%define gold_arches %{ix86} x86_64 %{arm} aarch64
+%else
 %define gold_arches %{ix86} x86_64 %{arm} aarch64 %{power64} s390x
+%endif
 %ifarch %{gold_arches}
   %bcond_without gold
 %else
@@ -78,12 +82,12 @@ Patch17:	0002-test-Fix-Assembler-debug-info.ll.patch
 
 BuildRequires:	gcc
 BuildRequires:	gcc-c++
-BuildRequires:	cmake
+BuildRequires:	cmake3
 BuildRequires:	ninja-build
 BuildRequires:	zlib-devel
 BuildRequires:	libffi-devel
 BuildRequires:	ncurses-devel
-BuildRequires:	python3-sphinx
+BuildRequires:	python34-sphinx
 BuildRequires:	multilib-rpm-config
 BuildRequires:	chrpath
 %if %{with gold}
@@ -96,8 +100,8 @@ BuildRequires:	valgrind-devel
 %endif
 # LLVM's LineEditor library will use libedit if it is available.
 BuildRequires:	libedit-devel
-# We need python3-devel for pathfix.py.
-BuildRequires:	python3-devel
+# We need python36-devel for pathfix.py.
+BuildRequires:	python36-devel
 
 Requires:	%{name}-libs%{?_isa} = %{version}-%{release}
 
@@ -185,7 +189,7 @@ cd _build
 %endif
 
 # force off shared libs as cmake macros turns it on.
-%cmake .. -G Ninja \
+%cmake3 .. -G Ninja \
 	-DBUILD_SHARED_LIBS:BOOL=OFF \
 	-DCMAKE_BUILD_TYPE=RelWithDebInfo \
 %ifarch s390 %{arm} %ix86
@@ -244,11 +248,11 @@ cd _build
 	-DLLVM_INSTALL_SPHINX_HTML_DIR=%{build_pkgdocdir}/html \
 	-DSPHINX_EXECUTABLE=%{_bindir}/sphinx-build-3
 
-ninja -v
+%{__ninja} -v
 
 %install
 cd _build
-ninja -v install
+%{__ninja} -v install
 
 %if !0%{?compat_build}
 # fix multi-lib
@@ -345,7 +349,7 @@ rm -Rf %{build_install_prefix}/share/opt-viewer
 
 %check
 cd _build
-ninja check-all || :
+%{__ninja} check-all || :
 
 %ldconfig_scriptlets libs
 
