@@ -248,6 +248,10 @@ cd _build
 	-DLLVM_INSTALL_SPHINX_HTML_DIR=%{build_pkgdocdir}/html \
 	-DSPHINX_EXECUTABLE=%{_bindir}/sphinx-build-3
 
+# There is a race condition that can cause failures when running sphinx in parallel,
+# so we can only use 1 thread when building the spinx documentation.
+# See https://github.com/sphinx-doc/sphinx/issues/4262
+%{__ninja} -v -j1 sphinx
 %{__ninja} -v
 
 %install
