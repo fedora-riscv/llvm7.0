@@ -55,7 +55,7 @@
 
 Name:		%{pkg_name}
 Version:	%{maj_ver}.%{min_ver}.%{patch_ver}
-Release:	4%{?rc_ver:.rc%{rc_ver}}%{?dist}
+Release:	4%{?rc_ver:.rc%{rc_ver}}%{?dist}.1
 Summary:	The Low Level Virtual Machine
 
 License:	NCSA
@@ -449,6 +449,9 @@ fi
 %endif
 
 %changelog
+* Thu Jul 25 2019 Fedora Release Engineering <releng@fedoraproject.org> - 7.0.1-4.1
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
+
 
 * Tue Feb 26 2019 sguelton@redhat.com - 7.0.1-4
 - Install ld.so.config file with -lib package
