@@ -35,6 +35,7 @@
 %if 0%{?compat_build}
 %global pkg_name llvm%{maj_ver}.%{min_ver}
 %global exec_suffix -%{maj_ver}.%{min_ver}
+%global short_exec_suffix -%{maj_ver}
 %global install_prefix %{_libdir}/%{name}
 %global install_bindir %{install_prefix}/bin
 %global install_includedir %{install_prefix}/include
@@ -55,7 +56,7 @@
 
 Name:		%{pkg_name}
 Version:	%{maj_ver}.%{min_ver}.%{patch_ver}
-Release:	4%{?rc_ver:.rc%{rc_ver}}%{?dist}.2
+Release:	5%{?rc_ver:.rc%{rc_ver}}%{?dist}
 Summary:	The Low Level Virtual Machine
 
 License:	NCSA
@@ -314,6 +315,7 @@ mkdir -p %{buildroot}/%{_bindir}
 for f in `ls %{buildroot}/%{install_bindir}/*`; do
   filename=`basename $f`
   ln -s %{install_bindir}/$filename %{buildroot}/%{_bindir}/$filename%{exec_suffix}
+  ln -s $filename%{exec_suffix} %{buildroot}/%{_bindir}/$filename%{short_exec_suffix}
 done
 
 # Move header files
@@ -323,6 +325,7 @@ ln -s ../../../%{install_includedir}/llvm-c %{buildroot}/%{pkg_includedir}/llvm-
 
 # Fix multi-lib
 mv %{buildroot}%{_bindir}/llvm-config{%{exec_suffix},%{exec_suffix}-%{__isa_bits}}
+ln -s llvm-config%{exec_suffix}-%{__isa_bits} %{buildroot}%{_bindir}/llvm-config%{short_exec_suffix}-%{__isa_bits}
 %multilib_fix_c_header --file %{install_includedir}/llvm/Config/llvm-config.h
 
 # Create ld.so.conf.d entry
@@ -336,6 +339,7 @@ mkdir -p %{buildroot}/%{_mandir}/man1
 for f in `ls %{build_install_prefix}/share/man/man1/*`; do
   filename=`basename $f | cut -f 1 -d '.'`
   mv $f %{buildroot}%{_mandir}/man1/$filename%{exec_suffix}.1
+  ln -s $filename%{exec_suffix}.1 %{buildroot}%{_mandir}/man1/$filename%{short_exec_suffix}.1
 done
 
 # Remove opt-viewer, since this is just a compatibility package.
@@ -408,8 +412,10 @@ fi
 %exclude %{_libdir}/cmake/llvm/LLVMStaticExports.cmake
 %else
 %{_bindir}/llvm-config%{exec_suffix}-%{__isa_bits}
+%{_bindir}/llvm-config%{short_exec_suffix}-%{__isa_bits}
 %{pkg_bindir}/llvm-config
 %{_mandir}/man1/llvm-config%{exec_suffix}.1.gz
+%{_mandir}/man1/llvm-config%{short_exec_suffix}.1.gz
 %{install_includedir}/llvm
 %{install_includedir}/llvm-c
 %{pkg_includedir}/llvm
@@ -449,12 +455,14 @@ fi
 %endif
 
 %changelog
+* Sat Feb 15 2020 Elliott Sales de Andrade <quantum.analyst@gmail.com> - 7.0.1-5
+- Install *-7 symlink to *-7.0 binaries, rhbz#1733421
+
 * Wed Jan 29 2020 Fedora Release Engineering <releng@fedoraproject.org> - 7.0.1-4.2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
 
 * Thu Jul 25 2019 Fedora Release Engineering <releng@fedoraproject.org> - 7.0.1-4.1
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
-
 
 * Tue Feb 26 2019 sguelton@redhat.com - 7.0.1-4
 - Install ld.so.config file with -lib package
