@@ -56,7 +56,7 @@
 
 Name:		%{pkg_name}
 Version:	%{maj_ver}.%{min_ver}.%{patch_ver}
-Release:	5%{?rc_ver:.rc%{rc_ver}}%{?dist}
+Release:	6%{?rc_ver:.rc%{rc_ver}}%{?dist}
 Summary:	The Low Level Virtual Machine
 
 License:	NCSA
@@ -455,6 +455,9 @@ fi
 %endif
 
 %changelog
+* Tue Jun  2 2020 Jens Petersen <petersen@redhat.com> - 7.0.1-6
+- unretire package
+
 * Sat Feb 15 2020 Elliott Sales de Andrade <quantum.analyst@gmail.com> - 7.0.1-5
 - Install *-7 symlink to *-7.0 binaries, rhbz#1733421
 
