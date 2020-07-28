@@ -56,7 +56,7 @@
 
 Name:		%{pkg_name}
 Version:	%{maj_ver}.%{min_ver}.%{patch_ver}
-Release:	6%{?rc_ver:.rc%{rc_ver}}%{?dist}
+Release:	6%{?rc_ver:.rc%{rc_ver}}%{?dist}.1
 Summary:	The Low Level Virtual Machine
 
 License:	NCSA
@@ -455,6 +455,9 @@ fi
 %endif
 
 %changelog
+* Tue Jul 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 7.0.1-6.1
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
+
 * Tue Jun  2 2020 Jens Petersen <petersen@redhat.com> - 7.0.1-6
 - unretire package
 
