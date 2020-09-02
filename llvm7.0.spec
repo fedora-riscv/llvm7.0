@@ -177,6 +177,8 @@ pathfix.py -i %{__python3} -pn \
 sed 's~@TOOLS_DIR@~%{llvm_bindir}~' %{SOURCE1} > run-lit-tests
 
 %build
+%global _vpath_builddir .
+
 mkdir -p _build
 cd _build
 
