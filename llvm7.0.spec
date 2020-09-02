@@ -56,7 +56,7 @@
 
 Name:		%{pkg_name}
 Version:	%{maj_ver}.%{min_ver}.%{patch_ver}
-Release:	6%{?rc_ver:.rc%{rc_ver}}%{?dist}.2
+Release:	7%{?rc_ver:.rc%{rc_ver}}%{?dist}
 Summary:	The Low Level Virtual Machine
 
 License:	NCSA
@@ -174,7 +174,7 @@ pathfix.py -i %{__python3} -pn \
 	test/BugPoint/compile-custom.ll.py \
 	tools/opt-viewer/*.py
 
-sed -i 's~@TOOLS_DIR@~%{llvm_bindir}~' %{SOURCE1}
+sed 's~@TOOLS_DIR@~%{llvm_bindir}~' %{SOURCE1} > run-lit-tests
 
 %build
 mkdir -p _build
@@ -296,7 +296,7 @@ sed -i -e s~`pwd`/_build~%{_prefix}~g -e s~`pwd`~.~g %{lit_cfg} %{lit_cfg} %{lit
 sed -i 's~\(config.llvm_obj_root = \)"[^"]\+"~\1"%{llvm_bindir}"~' %{lit_unit_cfg}
 
 install -d %{buildroot}%{_libexecdir}/tests/llvm
-install -m 0755 %{SOURCE1} %{buildroot}%{_libexecdir}/tests/llvm
+install -m 0755 run-lit-tests %{buildroot}%{_libexecdir}/tests/llvm
 
 # Install lit tests.  We need to put these in a tarball otherwise rpm will complain
 # about some of the test inputs having the wrong object file format.
@@ -366,6 +366,7 @@ fi
 %endif
 
 %files
+%license LICENSE.TXT
 %{_bindir}/*
 %{_mandir}/man1/*.1.*
 %if !0%{?compat_build}
@@ -380,6 +381,7 @@ fi
 %endif
 
 %files libs
+%license LICENSE.TXT
 %{pkg_libdir}/libLLVM-%{maj_ver}.so
 %if !0%{?compat_build}
 %{_libdir}/BugpointPasses.so
