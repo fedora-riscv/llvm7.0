@@ -56,7 +56,7 @@
 
 Name:		%{pkg_name}
 Version:	%{maj_ver}.%{min_ver}.%{patch_ver}
-Release:	7%{?rc_ver:.rc%{rc_ver}}%{?dist}.2
+Release:	7%{?rc_ver:.rc%{rc_ver}}%{?dist}.3
 Summary:	The Low Level Virtual Machine
 
 License:	NCSA
@@ -460,6 +460,9 @@ fi
 %endif
 
 %changelog
+* Thu Jul 22 2021 Fedora Release Engineering <releng@fedoraproject.org> - 7.0.1-7.3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
+
 * Tue Mar 30 2021 Jonathan Wakely <jwakely@redhat.com> - 7.0.1-7.2
 - Rebuilt for removed libstdc++ symbol (#1937698)
 
